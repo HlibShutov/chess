@@ -36,7 +36,12 @@ from pieces import *
 #                    if piece._validate_move(x, y, coordinates): return 'continue'
 #    return 'mate'
 
-                    
+def is_check(king, all_pieces, coordinates):
+    threatened_squares = king.get_threatened_squares(all_pieces, coordinates)
+    in_check = (king.x, king.y) in threatened_squares
+    return in_check
+
+
 def simulate_move_and_check_king(selected_piece, new_x, new_y, all_pieces, coordinates, captured_piece):
     original_x, original_y = selected_piece.x, selected_piece.y
     selected_piece.x, selected_piece.y = new_x, new_y
@@ -44,8 +49,7 @@ def simulate_move_and_check_king(selected_piece, new_x, new_y, all_pieces, coord
         all_pieces.remove(captured_piece)
     king = [piece for piece in all_pieces if isinstance(piece, King) and piece.color == selected_piece.color][0]
     new_coordinates = [(p.x, p.y) for p in all_pieces if p!=king]
-    threatened_squares = king.get_threatened_squares(all_pieces, new_coordinates)
-    in_check = (king.x, king.y) in threatened_squares
+     in_check = is_check(king, all_pieces, new_coordinates)
     selected_piece.x, selected_piece.y = original_x, original_y
     if captured_piece:
         all_pieces.append(captured_piece)
