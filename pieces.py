@@ -214,6 +214,7 @@ class King(pygame.sprite.Sprite):
                                 threatened_squares.append((x, y))
         return set(threatened_squares)
     def castle_available(self, new_x, new_y, coordinates, pieces):
+        coordinates.remove((self.x, self.y))
         threatened_squares = self.get_threatened_squares(pieces, coordinates)
         if (new_x == 6 and self.short_castle) or (new_x == 2 and self.long_castle):
             if new_y == self.y and (self.x, self.y) not in threatened_squares:
